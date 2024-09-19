@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Post = ({ name, item, date, time, imgSrc }) => {
+const Post = ({ name, quantity, time, imgSrc }) => {
   return (
     <div className="flex flex-col h-full bg-white border border-slate-200 shadow shadow-slate-950/5 rounded-2xl overflow-hidden max-w-sm">
       {/* Image */}
@@ -20,7 +20,7 @@ const Post = ({ name, item, date, time, imgSrc }) => {
           </header>
           {/* Content */}
           <div className="text-sm text-slate-600 mb-2">
-            <p><strong>Quantity:</strong> {item}</p>
+            <p><strong>Quantity:</strong> {quantity}</p>
           </div>
           <div className="text-sm text-slate-600 mb-8">
             <p><strong>Time:</strong> {time}</p>

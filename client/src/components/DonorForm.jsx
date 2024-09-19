@@ -213,7 +213,7 @@ const DonorForm = () => {
             </form>
           </div>
           <div className="md:w-1/2 py-8 pr-6">
-            <GoogleMap mapContainerStyle={mapContainerStyle} zoom={8} center={center}>
+            <GoogleMap mapContainerStyle={mapContainerStyle} zoom={10} center={center}>
               <Marker position={center} />
             </GoogleMap>
           </div>

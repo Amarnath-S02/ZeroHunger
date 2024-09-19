@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import { GoogleMap, useLoadScript, Marker } from '@react-google-maps/api';
-import { ToastContainer, toast } from 'react-toastify';  // Popup Library
+import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css'; // Toast CSS
 import idli from '../assets/images/idli.jpg';
 import chickenBiriyani from '../assets/images/chicken_biriyani.jpeg';
 import parotta from '../assets/images/parotta.jpg';
 import vegMeals from '../assets/images/vegmeals.jpg';
 
+// Array of food images
 const foodImages = [idli, chickenBiriyani, parotta, vegMeals];
 
 const mapContainerStyle = {
@@ -84,14 +85,33 @@ const RecipientForm = () => {
           quantity: '',
           foodImage: '',
         });
-  
+
         if (response.ok) {
-          toast.success('Request submitted successfully!', { position: "top-center" });
+          toast.success('Request submitted successfully!', {
+            position: "top-center", 
+            autoClose: 3000,
+            hideProgressBar: true,
+            pauseOnHover: true,
+            draggable: true,
+            onClose: () => window.location.reload(), // Page reload after popup disappears
+          });
         } else {
-          toast.error('Error submitting request.', { position: "top-center" });
+          toast.error('Error submitting request.', {
+            position: "top-center", 
+            autoClose: 3000,
+            hideProgressBar: true,
+            pauseOnHover: true,
+            draggable: true,            
+          });
         }
       } catch (error) {
-        toast.error('Server error. Try again later.', { position: "top-center" });
+        toast.error('Server error. Try again later.', {
+          position: "top-center", 
+          autoClose: 3000,
+          hideProgressBar: true,
+          pauseOnHover: true,
+          draggable: true,
+        });
       }
     }
   };

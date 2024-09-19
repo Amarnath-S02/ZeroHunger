@@ -32,17 +32,17 @@ const RequestComponent = () => {
   }
 
   return (
-    <div id="tabpanel-2" role="tabpanel" aria-labelledby="tab-2" className='bg-white shadow-xl border-2 border-custom-orange rounded-lg p-8'>
-      <h2 className="text-2xl font-bold text-custom-orange text-center mb-4">Request Information</h2>
+    <div id="tabpanel-2" role="tabpanel" aria-labelledby="tab-2" className="bg-white shadow-xl border-2 border-custom-orange rounded-lg p-8">
+      <h2 className="text-2xl font-bold text-custom-orange text-center mb-4">Today's Request Information</h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
         {requests.length > 0 ? (
           requests.map((request, index) => (
             <Post
               key={index}
-              name={request.foodItem}
-              item={request.quantity} // Assuming `foodItem` is the item being requested
-              time={request.requestTime} // AM/PM format
-              imgSrc={request.foodImage} // Assuming `foodImage` contains the image URL
+              name={request.foodItem} // Food item name
+              quantity={request.quantity} // Quantity requested
+              time={request.time} // Convert time to AM/PM format
+              imgSrc={request.foodImage} // Food image URL
             />
           ))
         ) : (

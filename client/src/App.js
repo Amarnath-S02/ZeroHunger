@@ -14,6 +14,7 @@ import ManageRequests from './components/ManageRequests';
 import ManageUsers from './components/ManageUsers';
 import ViewReports from './components/ViewReports';
 import Footer from './components/Footer';
+import AddOrphanage from './components/AddOrphanage';
 
 const Layout = ({ children }) => {
   const hideNavbarAndFooter = [
@@ -57,6 +58,7 @@ const App = () => {
             <Route path="manage-donation" element={<ManageDonations />} />
             <Route path="manage-request" element={<ManageRequests />} />
             <Route path="manage-users" element={<ManageUsers />} />
+            <Route path="add-orphanages" element={<AddOrphanage />} />
             <Route path="reports" element={<ViewReports />} />
           </Route>
         </Routes>
