@@ -15,8 +15,10 @@ import ManageUsers from './components/ManageUsers';
 import ViewReports from './components/ViewReports';
 import Footer from './components/Footer';
 import AddOrphanage from './components/AddOrphanage';
+import ViewOrphanages from './components/ViewOrphanages';
 
 const Layout = ({ children }) => {
+  const location = useLocation(); // Get the current location
   const hideNavbarAndFooter = [
     '/signup',
     '/login',
@@ -27,8 +29,10 @@ const Layout = ({ children }) => {
     '/admin/manage-donation',
     '/admin/manage-request',
     '/admin/manage-users',
+    '/admin/add-orphanages',
+    '/admin/view-orphanages',
     '/admin/reports'
-  ].includes(window.location.pathname);
+  ].includes(location.pathname); // Use location.pathname to check the current route
 
   return (
     <>
@@ -59,6 +63,7 @@ const App = () => {
             <Route path="manage-request" element={<ManageRequests />} />
             <Route path="manage-users" element={<ManageUsers />} />
             <Route path="add-orphanages" element={<AddOrphanage />} />
+            <Route path="view-orphanages" element={<ViewOrphanages />} />
             <Route path="reports" element={<ViewReports />} />
           </Route>
         </Routes>

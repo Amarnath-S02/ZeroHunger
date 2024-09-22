@@ -162,7 +162,7 @@ const ManageRequests = () => {
                       {editingRequestId === request._id ? (
                         <input
                           type="text"
-                          className="border p-2 rounded-lg"
+                          className="border rounded-lg"
                           value={editedRequest.name}
                           onChange={(e) => setEditedRequest({ ...editedRequest, name: e.target.value })}
                         />
@@ -174,7 +174,7 @@ const ManageRequests = () => {
                       {editingRequestId === request._id ? (
                         <input
                           type="text"
-                          className="border p-2 rounded-lg"
+                          className="border rounded-lg"
                           value={editedRequest.foodItem}
                           onChange={(e) => setEditedRequest({ ...editedRequest, foodItem: e.target.value })}
                         />
@@ -186,7 +186,7 @@ const ManageRequests = () => {
                       {editingRequestId === request._id ? (
                         <input
                           type="number"
-                          className="border p-2 rounded-lg"
+                          className="border rounded-lg p-2 w-full"
                           value={editedRequest.quantity}
                           onChange={(e) => setEditedRequest({ ...editedRequest, quantity: e.target.value })}
                         />
@@ -194,23 +194,25 @@ const ManageRequests = () => {
                         request.quantity
                       )}
                     </td>
+                    <td className="p-2">
+  {editingRequestId === request._id ? (
+    <input
+      type="text"
+      className="border rounded-lg p-2 w-full" // Added padding and width
+      value={editedRequest.time}
+      onChange={(e) => setEditedRequest({ ...editedRequest, time: e.target.value })}
+      placeholder="Enter time" // Optional placeholder for better UX
+    />
+  ) : (
+    request.time
+  )}
+</td>
+
                     <td className="p-4">
                       {editingRequestId === request._id ? (
                         <input
                           type="text"
-                          className="border p-2 rounded-lg"
-                          value={editedRequest.time}
-                          onChange={(e) => setEditedRequest({ ...editedRequest, time: e.target.value })}
-                        />
-                      ) : (
-                        request.time
-                      )}
-                    </td>
-                    <td className="p-4">
-                      {editingRequestId === request._id ? (
-                        <input
-                          type="text"
-                          className="border p-2 rounded-lg"
+                          className="border rounded-lg"
                           value={editedRequest.date}
                           onChange={(e) => setEditedRequest({ ...editedRequest, date: e.target.value })}
                         />
@@ -222,7 +224,7 @@ const ManageRequests = () => {
                       {editingRequestId === request._id ? (
                         <input
                           type="text"
-                          className="border p-2 rounded-lg"
+                          className="border rounded-lg"
                           value={editedRequest.address}
                           onChange={(e) => setEditedRequest({ ...editedRequest, address: e.target.value })}
                         />
@@ -233,7 +235,7 @@ const ManageRequests = () => {
                     <td className="p-4">
                       {editingRequestId === request._id ? (
                         <select
-                          className="border p-2 rounded-lg"
+                          className="border rounded-lg"
                           value={editedRequest.status}
                           onChange={(e) => setEditedRequest({ ...editedRequest, status: e.target.value })}
                         >
@@ -249,7 +251,7 @@ const ManageRequests = () => {
                       {editingRequestId === request._id ? (
                         <input
                           type="text"
-                          className="border p-2 rounded-lg"
+                          className="border rounded-lg"
                           value={editedRequest.donor}
                           onChange={(e) => setEditedRequest({ ...editedRequest, donor: e.target.value })}
                         />
@@ -258,30 +260,31 @@ const ManageRequests = () => {
                       )}
                     </td>
                     <td className="p-4">
-                      {editingRequestId === request._id ? (
-                        <>
-                          <button
-                            className="bg-green-500 text-white px-4 py-2 rounded-lg"
-                            onClick={() => handleSave(request._id)}
-                          >
-                            Save
-                          </button>
-                          <button
-                            className="bg-gray-500 text-white px-4 py-2 rounded-lg ml-2"
-                            onClick={() => setEditingRequestId(null)}
-                          >
-                            Cancel
-                          </button>
-                        </>
-                      ) : (
-                        <button
-                          className="bg-blue-500 text-white px-4 py-2 rounded-lg"
-                          onClick={() => handleEdit(request)}
-                        >
-                          Edit
-                        </button>
-                      )}
-                    </td>
+  {editingRequestId === request._id ? (
+    <div className="flex space-x-4"> {/* Flex container with spacing */}
+      <button
+        className="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition duration-200"
+        onClick={() => handleSave(request._id)}
+      >
+        Save
+      </button>
+      <button
+        className="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600 transition duration-200"
+        onClick={() => setEditingRequestId(null)}
+      >
+        Cancel
+      </button>
+    </div>
+  ) : (
+    <button
+      className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition duration-200"
+      onClick={() => handleEdit(request)}
+    >
+      Edit
+    </button>
+  )}
+</td>
+
                   </tr>
                 ))
               ) : (

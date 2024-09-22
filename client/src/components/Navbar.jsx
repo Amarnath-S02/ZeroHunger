@@ -1,12 +1,14 @@
-import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import Profile from '../assets/images/KDB_img01.PNG';
+import React, { useState, useEffect, useRef } from 'react';
+import { Link as RouterLink } from 'react-router-dom';
+import { Link } from 'react-scroll'; // Import Link from react-scroll
+import Profile from '../assets/images/user_profile.jpg';
 import Logo from '../assets/images/zerohunger_logo.png';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const dropdownRef = useRef(null); // Create a ref for the dropdown
 
   useEffect(() => {
     // Check if user is authenticated
@@ -14,6 +16,20 @@ const Navbar = () => {
     if (token) {
       setIsAuthenticated(true);
     }
+
+    // Event listener to close the dropdown if clicked outside
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setDropdownOpen(false); // Close the dropdown if clicked outside
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+
+    return () => {
+      // Cleanup the event listener when the component unmounts
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
   }, []);
 
   const toggleMenu = () => setIsOpen((prevState) => !prevState);
@@ -28,10 +44,10 @@ const Navbar = () => {
   return (
     <nav className="border-gray-200 bg-custom-orange">
       <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-2">
-        <Link to="/" className="flex items-center space-x-3 rtl:space-x-reverse">
-          <img src={Logo} className="h-12" alt="Flowbite Logo" />
+        <RouterLink to="/" className="flex items-center space-x-3 rtl:space-x-reverse">
+          <img src={Logo} className="h-12" alt="Zero Hunger Logo" />
           <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">Zero Hunger</span>
-        </Link>
+        </RouterLink>
 
         <div className="relative flex items-center md:order-2 space-x-3 rtl:space-x-reverse">
           <button
@@ -45,7 +61,9 @@ const Navbar = () => {
             <img className="w-8 h-8 rounded-full" src={Profile} alt="User profile" />
           </button>
 
+          {/* Dropdown menu */}
           <div
+            ref={dropdownRef} // Attach the ref to the dropdown
             className={`absolute right-0 mt-64 z-50 text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow dark:bg-gray-700 dark:divide-orange-600 ${dropdownOpen ? 'block' : 'hidden'}`}
             id="user-dropdown"
           >
@@ -55,38 +73,38 @@ const Navbar = () => {
             </div>
             <ul className="py-2">
               <li>
-                <Link
+                <RouterLink
                   to="/dashboard"
                   className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
                 >
                   Dashboard
-                </Link>
+                </RouterLink>
               </li>
               <li>
-                <Link
+                <RouterLink
                   to="/settings"
                   className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
                 >
                   Settings
-                </Link>
+                </RouterLink>
               </li>
               {!isAuthenticated ? (
                 <>
                   <li>
-                    <Link
+                    <RouterLink
                       to="/login"
                       className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
                     >
                       Login
-                    </Link>
+                    </RouterLink>
                   </li>
                   <li>
-                    <Link
+                    <RouterLink
                       to="/signup"
                       className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
                     >
                       Sign Up
-                    </Link>
+                    </RouterLink>
                   </li>
                 </>
               ) : (
@@ -137,6 +155,8 @@ const Navbar = () => {
             <li>
               <Link
                 to="/"
+                smooth={true}
+                duration={500}
                 className="block py-1 px-3 text-white hover:bg-white rounded-xl md:hover:text-orange-600"
                 aria-current="page"
               >
@@ -145,7 +165,9 @@ const Navbar = () => {
             </li>
             <li>
               <Link
-                to="#"
+                to="donate"
+                smooth={true}
+                duration={500}
                 className="block py-1 px-3 text-white hover:bg-white rounded-xl md:hover:text-orange-600"
               >
                 Donate
@@ -153,22 +175,34 @@ const Navbar = () => {
             </li>
             <li>
               <Link
-                to="#"
+                to="request"
+                smooth={true}
+                duration={500}
                 className="block py-1 px-3 text-white hover:bg-white rounded-xl md:hover:text-orange-600"
               >
                 Request
               </Link>
             </li>
-            {['Services', 'Blog', 'About Us', 'Contact Us'].map((item) => (
-              <li key={item}>
-                <a
-                  href="#"
-                  className="block py-1 px-3 text-white hover:bg-white rounded-xl md:hover:text-orange-600"
-                >
-                  {item}
-                </a>
-              </li>
-            ))}
+            <li>
+              <Link
+                to="services"
+                smooth={true}
+                duration={500}
+                className="block py-1 px-3 text-white hover:bg-white rounded-xl md:hover:text-orange-600"
+              >
+                Services
+              </Link>
+            </li>
+            <li>
+              <Link
+                to="aboutus"
+                smooth={true}
+                duration={500}
+                className="block py-1 px-3 text-white hover:bg-white rounded-xl md:hover:text-orange-600"
+              >
+                About Us
+              </Link>
+            </li>
           </ul>
         </div>
       </div>

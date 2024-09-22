@@ -23,6 +23,40 @@ const getDonationsToday = async (req, res) => {
     }
   };  
 
+// Controller to handle updating a donation
+const updateDonation = async (req, res) => {
+  const donationId = req.params.id;
+  const { date, time, address, city, status, recipient } = req.body;
+
+  try {
+    // Find the donation by ID and update the fields
+    const updatedDonation = await Donation.findByIdAndUpdate(
+      donationId,
+      {
+        date,           // Update date
+        time,           // Update time
+        address,        // Update address
+        city,           // Update city
+        status,         // Update donation status
+        recipient       // Update recipient username
+      },
+      { new: true } // This option returns the updated document
+    );
+
+    if (!updatedDonation) {
+      return res.status(404).json({ message: 'Donation not found' });
+    }
+
+    return res.status(200).json({
+      message: 'Donation updated successfully',
+      updatedDonation
+    });
+  } catch (error) {
+    return res.status(500).json({ message: 'Error updating donation', error });
+  }
+};
+
 module.exports = {
   getDonationsToday,
+  updateDonation,
 };

@@ -1,10 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { toast } from 'react-toastify';
+import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css'; // Import Toastify CSS
-
-// Initialize Toastify
-toast.configure();
 
 const AddOrphanage = () => {
   const [orphanage, setOrphanage] = useState({
@@ -28,11 +25,7 @@ const AddOrphanage = () => {
     e.preventDefault();
     
     if (!orphanage.image) {
-      toast.error('Please upload an image.', {
-        position: toast.POSITION.TOP_RIGHT,
-        autoClose: 5000,
-        theme: 'dark'
-      });
+      toast.error('Please upload an image.');
       return;
     }
 
@@ -49,11 +42,7 @@ const AddOrphanage = () => {
           'Content-Type': 'multipart/form-data',
         },
       });
-      toast.success('Orphanage added successfully!', {
-        position: toast.POSITION.TOP_RIGHT,
-        autoClose: 5000,
-        theme: 'colored'
-      });
+      toast.success('Orphanage added successfully!');
       // Clear form after successful submission
       setOrphanage({
         name: '',
@@ -63,17 +52,25 @@ const AddOrphanage = () => {
         image: null,
       });
     } catch (error) {
-      toast.error('Error adding orphanage. Please try again.', {
-        position: toast.POSITION.TOP_RIGHT,
-        autoClose: 5000,
-        theme: 'colored'
-      });
+      toast.error('Error adding orphanage. Please try again.');
       console.error('Error adding orphanage:', error);
     }
   };
 
   return (
     <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      {/* Add ToastContainer to render notifications */}
+      <ToastContainer 
+        position="top-center" 
+        autoClose={3000} 
+        hideProgressBar 
+        newestOnTop 
+        closeOnClick 
+        rtl={false} 
+        pauseOnFocusLoss 
+        draggable 
+        pauseOnHover 
+      />
       <div className="bg-white shadow-2xl rounded-lg w-full max-w-4xl p-8">
         <h2 className="text-3xl font-semibold text-center text-gray-800 mb-6">Add New Orphanage</h2>
         <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-6">
