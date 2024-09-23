@@ -16,12 +16,14 @@ const DonationComponent = () => {
         }
         const data = await response.json();
         setDonations(data);
+        console.log(data)
       } catch (error) {
         setError(error.message);
       } finally {
         setLoading(false);
       }
     };
+    
 
     fetchDonations();
   }, []);
@@ -38,7 +40,7 @@ const DonationComponent = () => {
             <Post
               key={index}
               name={donation.foodItem}
-              item={donation.quantity}
+              quantity={donation.quantity}
               time={donation.time}
               imgSrc={`http://localhost:5000/${donation.photo}`}
             />

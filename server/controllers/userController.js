@@ -53,17 +53,18 @@ const loginUser = async (req, res) => {
         // Check if user exists
         const user = await User.findOne({ email });
         if (!user) {
-            return res.status(400).json({ error: 'Invalid email or password' });
+            return res.status(400).json({ error: 'Invalid email' });
         }
 
         // Compare password
         const isMatch = await bcrypt.compare(password, user.password);
         if (!isMatch) {
-            return res.status(400).json({ error: 'Invalid email or password' });
+            return res.status(400).json({ error: 'Invalid password' });
         }
 
         // Create a JWT token
         const token = jwt.sign({ id: user._id, username: user.username }, JWT_SECRET, { expiresIn: '24h' });
+        console.log(user._id,user.username)
 
         res.status(200).json({
             message: 'Login successful',
@@ -89,4 +90,69 @@ const getUserById = async (req, res) => {
     }
 };
 
-module.exports = { registerUser, loginUser, getUserById };
+const getUserNavById = async (req, res) => {
+    try {
+      // Extract user ID from request params
+      const userId = req.params.id;
+  
+      // Find the user by ID, selecting specific fields
+      const user = await User.findById(userId).select('firstName lastName email profileImage');
+  
+      // If no user found, return a 404 response
+      if (!user) {
+        return res.status(404).json({ message: 'User not found' });
+      }
+  
+      // Send the user details back in the response
+      res.json(user);
+    } catch (error) {
+      console.error('Error fetching user:', error);
+      res.status(500).json({ message: 'Server error' });
+    }
+  };
+
+  // Controller to get user profile
+const getUserProfile = async (req, res) => {
+    try {
+      const uId = req.params.id; // Extract user ID from the route parameter
+      console.log(uId)
+  
+      // Find user by ID
+      const user = await User.findById(uId).select('username firstName lastName email phone address profileImage'); // Exclude the password field
+      console.log(user)
+    
+      if (!user) {
+        return res.status(404).json({ message: 'User not found' });
+      }
+  
+        // Send the user details back in the response
+      res.json(user);      
+    } catch (error) {
+      console.error('Error fetching user profile:', error);
+      res.status(500).json({ message: 'Server error' });
+    }
+  };
+  
+  const updateUserProfile = async (req, res) => {
+    const { id } = req.params;
+    const { username, firstName, lastName, email, phone, address } = req.body;
+  
+    try {
+      const updatedUser = await User.findByIdAndUpdate(
+        id,
+        { username, firstName, lastName, email, phone, address },
+        { new: true, runValidators: true }
+      );
+  
+      if (!updatedUser) {
+        return res.status(404).json({ message: 'User not found' });
+      }
+  
+      res.status(200).json(updatedUser);
+    } catch (error) {
+      res.status(500).json({ message: 'Error updating profile', error });
+    }
+  };
+
+
+module.exports = { registerUser, loginUser, getUserById, getUserNavById, getUserProfile, updateUserProfile };

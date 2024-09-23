@@ -1,20 +1,36 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
-import { Link } from 'react-scroll'; // Import Link from react-scroll
-import Profile from '../assets/images/user_profile.jpg';
+import { Link } from 'react-scroll';
+import { jwtDecode } from 'jwt-decode'; // Import JWT decode
 import Logo from '../assets/images/zerohunger_logo.png';
+import axios from 'axios';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const dropdownRef = useRef(null); // Create a ref for the dropdown
+  const [userData, setUserData] = useState(null); // State to store user data
+  const dropdownRef = useRef(null);
 
   useEffect(() => {
     // Check if user is authenticated
     const token = localStorage.getItem('token');
     if (token) {
       setIsAuthenticated(true);
+
+      // Decode the token to get user info
+      const decoded = jwtDecode(token);
+      const { id } = decoded; // Extract id from token
+      
+      // Fetch user details from the backend using the id
+      axios
+        .get(`http://localhost:5000/api/users/nav/${id}`) // Replace this URL with your API endpoint
+        .then((response) => {
+          setUserData(response.data); // Store the user data
+        })
+        .catch((error) => {
+          console.error("Error fetching user data:", error);
+        });
     }
 
     // Event listener to close the dropdown if clicked outside
@@ -27,7 +43,6 @@ const Navbar = () => {
     document.addEventListener('mousedown', handleClickOutside);
 
     return () => {
-      // Cleanup the event listener when the component unmounts
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, []);
@@ -36,7 +51,6 @@ const Navbar = () => {
   const toggleDropdown = () => setDropdownOpen((prevState) => !prevState);
 
   const handleSignOut = () => {
-    // Clear authentication token
     localStorage.removeItem('token');
     setIsAuthenticated(false);
   };
@@ -50,75 +64,78 @@ const Navbar = () => {
         </RouterLink>
 
         <div className="relative flex items-center md:order-2 space-x-3 rtl:space-x-reverse">
-          <button
-            type="button"
-            className="flex text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
-            id="user-menu-button"
-            aria-expanded={dropdownOpen ? "true" : "false"}
-            onClick={toggleDropdown}
-          >
-            <span className="sr-only">Open user menu</span>
-            <img className="w-8 h-8 rounded-full" src={Profile} alt="User profile" />
-          </button>
+          {isAuthenticated && userData ? (
+            <>
+              <button
+                type="button"
+                className="flex text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
+                id="user-menu-button"
+                aria-expanded={dropdownOpen ? "true" : "false"}
+                onClick={toggleDropdown}
+              >
+                <span className="sr-only">Open user menu</span>
+                {/* <img className="w-8 h-8 rounded-full" src={Profile} alt="User profile" /> */}
+                <img src={`http://localhost:5000/uploads/${userData.profileImage}`} alt="Profile" className="w-12 h-12 rounded-full" />
+              </button>
 
-          {/* Dropdown menu */}
-          <div
-            ref={dropdownRef} // Attach the ref to the dropdown
-            className={`absolute right-0 mt-64 z-50 text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow dark:bg-gray-700 dark:divide-orange-600 ${dropdownOpen ? 'block' : 'hidden'}`}
-            id="user-dropdown"
-          >
-            <div className="px-4 py-3">
-              <span className="block text-sm text-gray-900 dark:text-white">Bonnie Green</span>
-              <span className="block text-sm text-gray-500 truncate dark:text-gray-400">name@flowbite.com</span>
-            </div>
-            <ul className="py-2">
-              <li>
-                <RouterLink
-                  to="/dashboard"
-                  className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
-                >
-                  Dashboard
-                </RouterLink>
-              </li>
-              <li>
-                <RouterLink
-                  to="/settings"
-                  className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
-                >
-                  Settings
-                </RouterLink>
-              </li>
-              {!isAuthenticated ? (
-                <>
+              {/* Dropdown menu */}
+              <div
+                ref={dropdownRef}
+                className={`absolute right-0 mt-64 z-50 text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow dark:bg-gray-700 dark:divide-orange-600 ${dropdownOpen ? 'block' : 'hidden'}`}
+                id="user-dropdown"
+              >
+                <div className="px-4 py-3">
+                  <span className="block text-sm text-gray-900 dark:text-white">
+                    {userData.firstName} {userData.lastName}
+                  </span>
+                  <span className="block text-sm text-gray-500 truncate dark:text-gray-400">
+                    {userData.email}
+                  </span>
+                </div>
+                <ul className="py-2">
                   <li>
                     <RouterLink
-                      to="/login"
+                      to="/dashboard"
                       className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
                     >
-                      Login
+                      Dashboard
                     </RouterLink>
                   </li>
                   <li>
                     <RouterLink
-                      to="/signup"
+                      to="/settings"
                       className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
                     >
-                      Sign Up
+                      Settings
                     </RouterLink>
                   </li>
-                </>
-              ) : (
-                <li>
-                  <button
-                    onClick={handleSignOut}
-                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white w-full text-left"
-                  >
-                    Sign Out
-                  </button>
-                </li>
-              )}
-            </ul>
-          </div>
+                  <li>
+                    <button
+                      onClick={handleSignOut}
+                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white w-full text-left"
+                    >
+                      Sign Out
+                    </button>
+                  </li>
+                </ul>
+              </div>
+            </>
+          ) : (
+            <>
+              <RouterLink
+                to="/login"
+                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
+              >
+                Login
+              </RouterLink>
+              <RouterLink
+                to="/signup"
+                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
+              >
+                Sign Up
+              </RouterLink>
+            </>
+          )}
 
           <button
             data-collapse-toggle="navbar-user"
@@ -195,12 +212,22 @@ const Navbar = () => {
             </li>
             <li>
               <Link
-                to="aboutus"
+                to="about"
                 smooth={true}
                 duration={500}
                 className="block py-1 px-3 text-white hover:bg-white rounded-xl md:hover:text-orange-600"
               >
                 About Us
+              </Link>
+            </li>
+            <li>
+              <Link
+                to="contact"
+                smooth={true}
+                duration={500}
+                className="block py-1 px-3 text-white hover:bg-white rounded-xl md:hover:text-orange-600"
+              >
+                Contact Us
               </Link>
             </li>
           </ul>
