@@ -11,8 +11,8 @@ const mapContainerStyle = {
 };
 
 const center = {
-  lat: -3.745,
-  lng: -38.523,
+  lat: 11.0168,
+  lng: 76.9558,
 };
 
 const DonorForm = () => {
@@ -32,10 +32,12 @@ const DonorForm = () => {
     image: null,
   });
 
-  // State to manage errors and submission
+  // State to manage errors, image preview, submission, and map location
   const [errors, setErrors] = useState({});
   const [imagePreview, setImagePreview] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [markerPosition, setMarkerPosition] = useState(center); // Set initial marker position to center
+  const [selectedAddress, setSelectedAddress] = useState(''); // For address from map
 
   // Handle input changes in form fields
   const handleChange = (e) => {
@@ -77,6 +79,32 @@ const DonorForm = () => {
 
     setErrors(formErrors);
     return Object.keys(formErrors).length === 0;
+  };
+
+  // Fetch address from coordinates using Google Geocoding API
+  const getAddressFromLatLng = async (lat, lng) => {
+    try {
+      const response = await axios.get(
+        `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=AIzaSyDtZ8bWsIDpKlq_g3uknsUwFYeYV86Nn60`
+      );
+      if (response.data.status === 'OK') {
+        const address = response.data.results[0].formatted_address;
+        setFormData({ ...formData, address });
+        setSelectedAddress(address);
+      } else {
+        toast.error('Unable to retrieve address.');
+      }
+    } catch (error) {
+      console.error('Error fetching address:', error);
+    }
+  };
+
+  // Handle map click event to update the marker position and fetch address
+  const handleMapClick = (event) => {
+    const lat = event.latLng.lat();
+    const lng = event.latLng.lng();
+    setMarkerPosition({ lat, lng });
+    getAddressFromLatLng(lat, lng);
   };
 
   // Submit form handler
@@ -124,6 +152,8 @@ const DonorForm = () => {
             image: null,
           });
           setImagePreview(null);
+          setSelectedAddress('');
+          setMarkerPosition(center); // Reset marker position to default
         } else {
           toast.error('Error initiating donation.', {
             position: "top-center",
@@ -165,7 +195,7 @@ const DonorForm = () => {
         <div className='flex flex-col md:flex-row px-4'>
           <div className="md:w-1/2 p-1">
             <form className="bg-white p-6" onSubmit={handleSubmit}>
-              {['name', 'email', 'address', 'city', 'foodItem'].map((field) => (
+              {['name', 'email', 'foodItem', 'city'].map((field) => (
                 <div className="mb-4" key={field}>
                   <input
                     type="text"
@@ -182,39 +212,69 @@ const DonorForm = () => {
               ))}
               <div className="mb-4">
                 <input
+                  type="text"
+                  name="address"
+                  placeholder="Address (or select from map)"
+                  value={selectedAddress || formData.address}
+                  onChange={handleChange}
+                  className={`shadow-md appearance-none border border-gray-300 rounded-lg w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-custom-orange focus:border-transparent transition duration-300 ease-in-out ${
+                    errors.address ? 'border-red-500' : ''
+                  }`}
+                />
+                {errors.address && <p className="text-red-500 text-xs italic">{errors.address}</p>}
+              </div>
+              <div className="mb-4">
+                <input
                   type="number"
                   name="quantity"
-                  placeholder="Quantity"
+                  placeholder="Quantity (people)"
                   value={formData.quantity}
                   onChange={handleChange}
-                  className={`shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline ${
+                  className={`shadow-md appearance-none border border-gray-300 rounded-lg w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-custom-orange focus:border-transparent transition duration-300 ease-in-out ${
                     errors.quantity ? 'border-red-500' : ''
                   }`}
                 />
                 {errors.quantity && <p className="text-red-500 text-xs italic">{errors.quantity}</p>}
               </div>
 
-              <div {...getRootProps({ className: 'dropzone border-dashed border-2 border-gray-300 py-4 mb-4 text-center' })}>
-                <input {...getInputProps()} />
-                <p>Drag 'n' drop an image here, or click to select one</p>
-              </div>
-              {imagePreview && (
-                <div className="mb-4">
-                  <img src={imagePreview} alt="Preview" className="w-full h-auto" />
+              <div className="mb-4">
+                <label className="block text-gray-700 text-sm font-bold mb-2">
+                  Upload Food Image
+                </label>
+                <div {...getRootProps()} className="border-dashed border-2 border-gray-400 rounded-lg p-4 cursor-pointer focus:outline-none">
+                  <input {...getInputProps()} />
+                  {imagePreview ? (
+                    <img
+                      src={imagePreview}
+                      alt="Preview"
+                      className="h-32 mx-auto object-cover rounded-lg shadow-md"
+                    />
+                  ) : (
+                    <p className="text-center text-gray-500">Drag and drop or click to upload an image</p>
+                  )}
                 </div>
-              )}
-              <button
-                type="submit"
-                disabled={isSubmitting}
-                className="bg-custom-orange hover:bg-orange-600 text-white font-bold py-3 px-4 rounded focus:outline-none focus:shadow-outline w-full transition duration-300 ease-in-out"
-              >
-                {isSubmitting ? 'Submitting...' : 'Submit'}
-              </button>
+              </div>
+              <div className="flex items-center justify-between">
+                <button
+                  type="submit"
+                  className={`w-full py-3 px-4 font-bold text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-custom-orange focus:ring-opacity-50 transition duration-300 ease-in-out ${
+                    isSubmitting ? 'bg-gray-400 cursor-not-allowed' : 'bg-custom-orange hover:bg-orange-600'
+                  }`}
+                  disabled={isSubmitting}
+                >
+                  {isSubmitting ? 'Submitting...' : 'Submit'}
+                </button>
+              </div>
             </form>
           </div>
-          <div className="md:w-1/2 py-8 pr-6">
-            <GoogleMap mapContainerStyle={mapContainerStyle} zoom={10} center={center}>
-              <Marker position={center} />
+          <div className="md:w-1/2 p-1 h-96">
+            <GoogleMap
+              mapContainerStyle={mapContainerStyle}
+              zoom={12}
+              center={markerPosition}
+              onClick={handleMapClick}
+            >
+              <Marker position={markerPosition} />
             </GoogleMap>
           </div>
         </div>

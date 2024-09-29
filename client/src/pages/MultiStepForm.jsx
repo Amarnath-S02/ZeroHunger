@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom'; // Import useNavigate
+import React, { useState, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import registerUser from '../services/api';
-import '../services/MultiStepForm.scss'; 
+import '../services/MultiStepForm.scss';
 import '../services/BackgroundAnimation.scss';
+import '../services/map.css'
+import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api'; // Import Google Maps components
 
 const MultiStepForm = () => {
     const [currentStep, setCurrentStep] = useState(1);
@@ -17,12 +19,35 @@ const MultiStepForm = () => {
         profileImage: null,
     });
     const [imagePreview, setImagePreview] = useState(null);
-    const [successMessage, setSuccessMessage] = useState(''); // State for success message
+    const [successMessage, setSuccessMessage] = useState('');
+    const [showMap, setShowMap] = useState(false); // State for showing the map
+    const [markerPosition, setMarkerPosition] = useState({ lat: 10.8505, lng: 77.2644 }); // Default location (Tamil Nadu)
+    const [mapLoaded, setMapLoaded] = useState(false); // Track if the map has been loaded
 
-    const navigate = useNavigate(); // Initialize useNavigate
+    const navigate = useNavigate();
     const totalSteps = 4;
+    const mapRef = useRef(null); // Reference for the map
 
     const handleNext = () => {
+        // Validate fields based on current step
+        if (currentStep === 1) {
+            if (!formData.username || !formData.email || !formData.password) {
+                alert("Please fill in all fields.");
+                return;
+            }
+        } else if (currentStep === 2) {
+            if (!formData.firstName || !formData.lastName || !formData.phone || !formData.address) {
+                alert("Please fill in all fields.");
+                return;
+            }
+        } else if (currentStep === 3) {
+            if (!formData.profileImage) {
+                alert("Please upload a profile image.");
+                return;
+            }
+        }
+
+        // Proceed to the next step if all validations pass
         if (currentStep < totalSteps) {
             setCurrentStep(currentStep + 1);
         }
@@ -51,6 +76,35 @@ const MultiStepForm = () => {
         }
     };
 
+    // Function to show the map when focusing on address field
+    const handleAddressFocus = () => {
+        setShowMap(true); // Show map when the address field is focused
+    };
+
+    // Function to hide the map and fill the address field with the selected location
+    const handleMapClick = (event) => {
+        const { latLng } = event;
+        const lat = latLng.lat();
+        const lng = latLng.lng();
+        const geocoder = new window.google.maps.Geocoder();
+
+        // Reverse geocoding to get the address
+        geocoder.geocode({ location: { lat, lng } }, (results, status) => {
+            if (status === 'OK') {
+                if (results[0]) {
+                    setFormData({ ...formData, address: results[0].formatted_address });
+                    setShowMap(false); // Hide map after selecting the location
+                } else {
+                    console.error('No results found');
+                }
+            } else {
+                console.error('Geocoder failed due to: ' + status);
+            }
+        });
+
+        setMarkerPosition({ lat, lng }); // Update marker position
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
 
@@ -62,10 +116,10 @@ const MultiStepForm = () => {
         try {
             const response = await registerUser(form);
             console.log('User registered successfully:', response.data);
-            setSuccessMessage('Account created successfully!'); // Set success message
+            setSuccessMessage('Account created successfully!');
             setTimeout(() => {
-                navigate('/login'); // Navigate to login page after a short delay
-            }, 2000); // Delay for 2 seconds to display the message
+                navigate('/login');
+            }, 2000);
         } catch (error) {
             console.error('Error registering user:', error.response?.data || error.message);
         }
@@ -85,6 +139,31 @@ const MultiStepForm = () => {
                 <li></li>
                 <li></li>
             </ul>
+
+            {/* Map Modal */}
+            {showMap && (
+                <div className="map-overlay">
+                    <div className="map-dialog">
+                        <LoadScript googleMapsApiKey="AIzaSyDtZ8bWsIDpKlq_g3uknsUwFYeYV86Nn60">
+                            <GoogleMap
+                                mapContainerStyle={{ width: '100%', height: '400px' }}
+                                center={markerPosition}
+                                zoom={10}
+                                onClick={handleMapClick}
+                                onLoad={() => setMapLoaded(true)}
+                                ref={mapRef}
+                            >
+                                {/* Marker shows on the selected position */}
+                                {mapLoaded && <Marker position={markerPosition} />}
+                            </GoogleMap>
+                        </LoadScript>
+                        <button onClick={() => setShowMap(false)} className="close-map-btn">
+                            Close Map
+                        </button>
+                    </div>
+                </div>
+            )}
+
             <div className="form-wizard">
                 <div className="steps">
                     <ul>
@@ -196,6 +275,7 @@ const MultiStepForm = () => {
                                         placeholder="Address"
                                         value={formData.address}
                                         onChange={handleChange}
+                                        onFocus={handleAddressFocus} // Trigger map on focus
                                         className='my-2'
                                     />
                                 </div>
@@ -203,13 +283,13 @@ const MultiStepForm = () => {
                                     <input
                                         type="button"
                                         value="BACK"
-                                        className="btn btn-default back px-4 py-2 my-2"
+                                        className="btn btn-secondary back"
                                         onClick={handleBack}
                                     />
                                     <input
                                         type="button"
                                         value="NEXT"
-                                        className="btn btn-primary next px-4 py-2 my-2"
+                                        className="btn btn-primary next"
                                         onClick={handleNext}
                                     />
                                 </div>
@@ -221,35 +301,30 @@ const MultiStepForm = () => {
                         <div className="form-container animated active">
                             <h2 className="text-center form-title">Profile Image</h2>
                             <form>
-                                {imagePreview && (
-                                    <div className="image-preview mb-4">
-                                        <img
-                                            src={imagePreview}
-                                            alt="Profile Preview"
-                                            className="w-32 h-32 object-cover rounded-full mx-auto"
-                                        />
-                                    </div>
-                                )}
                                 <div className="form-group">
                                     <input
                                         type="file"
                                         name="profileImage"
-                                        accept="image/*"
                                         onChange={handleChange}
-                                        className="w-full px-3 py-2 border rounded-md my-2"
+                                        className='my-2'
                                     />
+                                    {imagePreview && (
+                                        <div className="image-preview my-4">
+                                            <img src={imagePreview} alt="Profile Preview" />
+                                        </div>
+                                    )}
                                 </div>
                                 <div className="form-group text-center mar-b-0 flex justify-between items-center">
                                     <input
                                         type="button"
                                         value="BACK"
-                                        className="btn btn-default back px-4 py-2 my-2"
+                                        className="btn btn-secondary back"
                                         onClick={handleBack}
                                     />
                                     <input
                                         type="button"
                                         value="NEXT"
-                                        className="btn btn-primary next px-4 py-2 my-2"
+                                        className="btn btn-primary next"
                                         onClick={handleNext}
                                     />
                                 </div>
@@ -258,27 +333,16 @@ const MultiStepForm = () => {
                     )}
 
                     {currentStep === 4 && (
-                        <div className="form-container animated active my-auto">
+                        <div className="form-container animated active">
                             <h2 className="text-center form-title">Finish</h2>
                             <form onSubmit={handleSubmit}>
-                                <div className="form-group">
-                                    <h3 className="text-center">Thanks for joining the community</h3>
-                                    <p className="text-center">
-                                        Made by <a href="#" target="_blank" rel="noopener noreferrer">@Zero Hunger</a>
-                                    </p>
-                                </div>
-                                <div className="form-group text-center mar-b-0 flex justify-between items-center">
-                                    <input
-                                        type="button"
-                                        value="BACK"
-                                        className="btn btn-default back px-4 py-2 my-2"
-                                        onClick={handleBack}
-                                    />
-                                    <input
+                                <div className="form-group text-center">
+                                    <button
                                         type="submit"
-                                        value="FINISH"
-                                        className="btn btn-primary next px-4 py-2 my-2"
-                                    />
+                                        className="btn btn-primary btn-submit"
+                                    >
+                                        Submit
+                                    </button>
                                 </div>
                             </form>
                         </div>

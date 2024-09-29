@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import '../services/BackgroundAnimation.scss';
+// import '../services/BackgroundAnimation.scss';
 import { jwtDecode } from 'jwt-decode';
 
 const AccountSettings = () => {
@@ -200,7 +200,7 @@ const AccountSettings = () => {
           </div>
         </form>
       </div>
-      <ul className="bg-bubbles absolute top-0 left-0 w-full h-full z-10">
+      {/* <ul className="bg-bubbles absolute top-0 left-0 w-full h-full z-10">
         <li></li>
         <li></li>
         <li></li>
@@ -210,7 +210,7 @@ const AccountSettings = () => {
         <li></li>
         <li></li>
         <li></li>
-      </ul>
+      </ul> */}
     </div>
   );
 };

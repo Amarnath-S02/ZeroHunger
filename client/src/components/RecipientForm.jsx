@@ -16,8 +16,8 @@ const mapContainerStyle = {
 };
 
 const center = {
-  lat: -3.745,
-  lng: -38.523,
+  lat: 11.0168,
+  lng: 76.9558,
 };
 
 const RecipientForm = () => {
@@ -35,6 +35,7 @@ const RecipientForm = () => {
     foodImage: '', 
   });
 
+  const [markerPosition, setMarkerPosition] = useState(center); // To track marker position
   const [errors, setErrors] = useState({});
   const [showModal, setShowModal] = useState(false);
 
@@ -121,6 +122,30 @@ const RecipientForm = () => {
     setShowModal(false);
   };
 
+  // Function to handle map clicks and update marker position and address
+  const handleMapClick = async (e) => {
+    const lat = e.latLng.lat();
+    const lng = e.latLng.lng();
+    setMarkerPosition({ lat, lng });
+
+    // Reverse geocode to get the address
+    const geocoder = new window.google.maps.Geocoder();
+    geocoder.geocode({ location: { lat, lng } }, (results, status) => {
+      if (status === 'OK' && results[0]) {
+        const address = results[0].formatted_address;
+        setFormData({ ...formData, address });
+      } else {
+        toast.error('Error fetching the address', {
+          position: "top-center", 
+          autoClose: 3000,
+          hideProgressBar: true,
+          pauseOnHover: true,
+          draggable: true,
+        });
+      }
+    });
+  };
+
   if (loadError) return <div>Error loading maps</div>;
   if (!isLoaded) return <div>Loading maps...</div>;
 
@@ -139,8 +164,13 @@ const RecipientForm = () => {
         <div className='flex flex-col md:flex-row px-4'>
           <div className="md:w-1/2 p-4">
             <div className="bg-gray-200 rounded-lg w-full h-80 md:h-80 flex items-center justify-center">
-              <GoogleMap mapContainerStyle={mapContainerStyle} zoom={10} center={center}>
-                <Marker position={center} />
+              <GoogleMap 
+                mapContainerStyle={mapContainerStyle} 
+                zoom={10} 
+                center={markerPosition}
+                onClick={handleMapClick}
+              >
+                <Marker position={markerPosition} />
               </GoogleMap>
             </div>
           </div>
@@ -207,21 +237,25 @@ const RecipientForm = () => {
         </div>
       </div>
 
-      {/* Image Selection Modal */}
+      {/* Modal for selecting food image */}
       {showModal && (
-        <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center">
-          <div className="bg-white p-4 rounded-lg shadow-lg max-w-md">
-            <h2 className="text-xl font-bold mb-4">Select a Food Image</h2>
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="bg-white p-6 rounded-lg shadow-lg max-w-md mx-auto">
+            <h3 className="text-lg font-bold mb-4">Select Food Image</h3>
             <div className="grid grid-cols-2 gap-4">
               {foodImages.map((image, index) => (
-                <div key={index} className="cursor-pointer" onClick={() => handleImageSelect(image)}>
-                  <img src={image} alt={`Food ${index + 1}`} className="w-32 h-32 object-cover rounded" />
-                </div>
+                <img
+                  key={index}
+                  src={image}
+                  alt={`Food ${index}`}
+                  className="cursor-pointer rounded-lg"
+                  onClick={() => handleImageSelect(image)}
+                />
               ))}
             </div>
             <button
               onClick={() => setShowModal(false)}
-              className="mt-4 bg-gray-600 text-white py-2 px-4 rounded"
+              className="mt-4 bg-custom-orange text-white font-bold py-2 px-4 rounded"
             >
               Close
             </button>
