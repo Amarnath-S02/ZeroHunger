@@ -33,16 +33,16 @@ const OrphanageComponent = () => {
 
   return (
     <div id="tabpanel-2" role="tabpanel" aria-labelledby="tab-2" className="bg-white shadow-xl border-2 border-custom-orange rounded-lg p-8">
-      <h2 className="text-2xl font-bold text-custom-orange text-center mb-4">Today's Request Information</h2>
+      <h2 className="text-2xl font-bold text-custom-orange text-center mb-4">Orphanages</h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-        {/* Map over orphanages and display each one */}
         {orphanages.map((orphanage) => (
-        <PostOrph
-          key={orphanage._id}
-          name={orphanage.name}
-          imgSrc={`http://localhost:5000/${orphanage.image.replace(/\\/g, '/')}`} // Assuming orphanageImage contains the image URL
-        />
-      ))}
+          <PostOrph
+            key={orphanage._id}
+            id={orphanage._id} // Pass the orphanage ID to PostOrph
+            name={orphanage.name}
+            imgSrc={`http://localhost:5000/${orphanage.image.replace(/\\/g, '/')}`}
+          />
+        ))}
       </div>
     </div>
   );

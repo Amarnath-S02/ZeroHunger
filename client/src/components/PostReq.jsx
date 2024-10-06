@@ -1,10 +1,10 @@
 import React from 'react';
 
-const Post = ({ name, quantity, time, imgSrc }) => {
+const PostReq = ({ name, quantity, time, imgSrc }) => {
   return (
     <div className="flex flex-col h-full bg-white border border-slate-200 shadow-lg transition-shadow duration-300 ease-in-out hover:shadow-2xl rounded-2xl overflow-hidden max-w-sm hover:scale-105 transform-gpu">
       {/* Image */}
-      <img className="object-cover h-48 w-full transition-transform duration-300 ease-in-out" src={imgSrc} alt={name} />
+      {/* <img className="object-cover h-48 w-full" src={imgSrc} alt={name} /> */}
 
       {/* Card Content */}
       <div className="flex-1 flex flex-col p-6">
@@ -25,13 +25,14 @@ const Post = ({ name, quantity, time, imgSrc }) => {
           <div className="text-sm text-slate-600 mb-2">
             <p><strong>Quantity:</strong> {quantity}</p>
           </div>
-          <div className="text-sm text-slate-600 mb-4 flex justify-between items-center">
-            <p><strong>Time:</strong> {time}</p>
+          <div className="flex justify-between items-center">
+            <p className="text-sm text-slate-600"><strong>Time:</strong> {time}</p>
+            {/* Buy Now Button */}
             <a
               className="inline-flex justify-center whitespace-nowrap rounded-lg bg-indigo-500 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-600 hover:scale-105 transform transition-transform duration-200 focus-visible:outline-none focus-visible:ring focus-visible:ring-indigo-300"
               href="#0"
             >
-              Request Now
+              Donate Now
             </a>
           </div>
         </div>
@@ -40,7 +41,7 @@ const Post = ({ name, quantity, time, imgSrc }) => {
   );
 };
 
-export default Post;
+export default PostReq;
 
 
 

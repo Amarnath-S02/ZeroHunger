@@ -16,6 +16,7 @@ import ViewReports from './components/ViewReports';
 import Footer from './components/Footer';
 import AddOrphanage from './components/AddOrphanage';
 import ViewOrphanages from './components/ViewOrphanages';
+import OrphanageDetails from './pages/OrphanageDetails';
 
 const Layout = ({ children }) => {
   const location = useLocation(); // Get the current location
@@ -32,7 +33,7 @@ const Layout = ({ children }) => {
     '/admin/add-orphanages',
     '/admin/view-orphanages',
     '/admin/reports'
-  ].includes(location.pathname); // Use location.pathname to check the current route
+  ].includes(location.pathname) || location.pathname.startsWith('/orphanage'); // Use location.pathname to check the current route
 
   return (
     <>
@@ -54,6 +55,7 @@ const App = () => {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/settings" element={<AccountSettings />} />
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/orphanage/:id" element={<OrphanageDetails />} />
 
           {/* Admin Routes - Nested Routes in AdminDashboard */}
           <Route path="/admin" element={<AdminLogin />} />

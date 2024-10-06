@@ -1,10 +1,18 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
-const PostOrph = ({ name, imgSrc }) => {
+const PostOrph = ({ name, imgSrc, id }) => {
+  const navigate = useNavigate();
+
+  const handleVisit = () => {
+    // Navigate to the orphanage details page, passing the orphanage ID
+    navigate(`/orphanage/${id}`);
+  };
+
   return (
-    <div className="flex flex-col h-full bg-white border border-slate-200 shadow shadow-slate-950/5 rounded-2xl overflow-hidden max-w-sm">
+    <div className="flex flex-col h-full bg-white border border-slate-200 shadow-lg transition-shadow duration-300 ease-in-out hover:shadow-2xl rounded-2xl overflow-hidden max-w-sm hover:scale-105 transform-gpu">
       {/* Image */}
-      <img className="object-cover h-48 w-full" src={imgSrc} alt={name} />
+      <img className="object-cover h-48 w-full transition-transform duration-300 ease-in-out hover:scale-110" src={imgSrc} alt={name} />
 
       {/* Card Content */}
       <div className="flex-1 flex flex-col p-6">
@@ -13,18 +21,20 @@ const PostOrph = ({ name, imgSrc }) => {
           {/* Header */}
           <header className="mb-2">
             <h2 className="text-xl font-extrabold leading-snug">
-              <a className="text-slate-900 focus-visible:outline-none focus-visible:ring focus-visible:ring-indigo-300" href="#0">
+              <a className="text-slate-900 hover:text-indigo-600 transition-colors duration-300 ease-in-out focus-visible:outline-none focus-visible:ring focus-visible:ring-indigo-300" href="#0">
                 {name}
               </a>
             </h2>
           </header>
-
         </div>
         {/* Card footer */}
-        <div className="flex justify-end space-x-2">
- 
-          <a className="inline-flex justify-center whitespace-nowrap rounded-lg bg-indigo-50 px-3 py-2 text-sm font-medium text-indigo-500 hover:bg-indigo-100 focus-visible:outline-none focus-visible:ring focus-visible:ring-indigo-300 transition-colors" href="#0">Preview</a>
-          <a className="inline-flex justify-center whitespace-nowrap rounded-lg bg-indigo-500 px-3 py-2 text-sm font-medium text-white hover:bg-indigo-600 focus-visible:outline-none focus-visible:ring focus-visible:ring-indigo-300 transition-colors" href="#0">Buy Now</a>
+        <div className="flex justify-end space-x-2 mt-4">
+          <button
+            className="inline-flex justify-center whitespace-nowrap rounded-lg bg-indigo-500 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-600 transition-colors duration-300 ease-in-out focus-visible:outline-none focus-visible:ring focus-visible:ring-indigo-300"
+            onClick={handleVisit}
+          >
+            Visit now
+          </button>
         </div>
       </div>
     </div>

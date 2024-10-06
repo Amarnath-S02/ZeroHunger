@@ -154,5 +154,28 @@ const getUserProfile = async (req, res) => {
     }
   };
 
+  const getUserDetails = async (req, res) => {
+    try {
+      const userId = req.params.id; // Extract user ID from params
+      const user = await User.findById(userId).select('firstName lastName email address'); // Select fields to return
+  
+      if (!user) {
+        return res.status(404).json({ message: 'User not found' });
+      }
+  
+      // Combine firstName and lastName into a single name field
+      const fullName = `${user.firstName} ${user.lastName}`;
+  
+      // Respond with the desired structure
+      res.status(200).json({
+        name: fullName,
+        email: user.email,
+        address: user.address,
+      });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Server error' });
+    }
+  };
 
-module.exports = { registerUser, loginUser, getUserById, getUserNavById, getUserProfile, updateUserProfile };
+module.exports = { registerUser, loginUser, getUserById, getUserNavById, getUserProfile, updateUserProfile, getUserDetails };

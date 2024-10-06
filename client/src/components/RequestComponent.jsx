@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios'; // To make API calls
-import Post from './Post'; // Adjust the import path based on your project structure
+import Post from './PostReq'; // Adjust the import path based on your project structure
 
 const RequestComponent = () => {
   const [requests, setRequests] = useState([]);

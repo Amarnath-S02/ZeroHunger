@@ -1,6 +1,6 @@
 // userRoutes.js
 const express = require('express');
-const { registerUser, loginUser, getUserById, getUserNavById, getUserProfile, updateUserProfile } = require('../controllers/userController');
+const { registerUser, loginUser, getUserById, getUserNavById, getUserProfile, updateUserProfile, getUserDetails } = require('../controllers/userController');
 const upload = require('../utils/multerSetup');
 const { protect, verifyToken } = require('../middlewares/authMiddleware');
 const jwt = require('jsonwebtoken');
@@ -19,5 +19,7 @@ router.get('/nav/:id', getUserNavById);
 // Route to get user profile by ID
 router.get('/account/:id', verifyToken, getUserProfile);
 router.put('/account/:id', authMiddleware, updateUserProfile);
+
+router.get('/:id', getUserDetails); 
 
 module.exports = router;

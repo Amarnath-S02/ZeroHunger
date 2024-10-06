@@ -6,6 +6,7 @@ import Service from '../components/TabsComponent';
 import AboutUs from '../components/AboutUs';
 import { Element } from 'react-scroll'; // Import Element from react-scroll
 import '../index.css';
+import Footer from '../components/Footer';
 
 const HomePage = () => {
   return (
@@ -36,6 +37,10 @@ const HomePage = () => {
       <Element name="aboutus">
         <AboutUs />
       </Element>
+
+      {/* <Element name="contact">
+        <Footer />
+      </Element> */}
     </div>
   );
 };

@@ -9,6 +9,7 @@ const AddOrphanage = () => {
     email: '',
     phone: '',
     address: '',
+    description: '', // Add description to state
     image: null,
   });
 
@@ -34,6 +35,7 @@ const AddOrphanage = () => {
     formData.append('email', orphanage.email);
     formData.append('phone', orphanage.phone);
     formData.append('address', orphanage.address);
+    formData.append('description', orphanage.description); // Add description to FormData
     formData.append('image', orphanage.image);
 
     try {
@@ -49,6 +51,7 @@ const AddOrphanage = () => {
         email: '',
         phone: '',
         address: '',
+        description: '', // Reset description field
         image: null,
       });
     } catch (error) {
@@ -116,13 +119,27 @@ const AddOrphanage = () => {
             />
           </div>
 
+          {/* Description */}
+          <div className="col-span-2">
+            <label htmlFor="description" className="block text-sm font-medium text-gray-700">Description</label>
+            <textarea
+              id="description"
+              name="description"
+              rows="4"
+              className="mt-1 block w-full p-3 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+              value={orphanage.description}
+              onChange={handleInputChange}
+              required
+            />
+          </div>
+
           {/* Address */}
           <div className="col-span-2">
             <label htmlFor="address" className="block text-sm font-medium text-gray-700">Address</label>
             <textarea
               id="address"
               name="address"
-              rows="4"
+              rows="2"
               className="mt-1 block w-full p-3 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
               value={orphanage.address}
               onChange={handleInputChange}
