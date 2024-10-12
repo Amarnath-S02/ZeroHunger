@@ -1,6 +1,6 @@
 // controllers/orphanageController.js
 const Orphanage = require('../models/orphanageModel');
-const Donation = require('../models/orphanageDonationModel');
+const Donation = require('../models/Donation');
 const User = require('../models/User'); // Assuming you have a User model
 
 const addOrphanage = async (req, res) => {

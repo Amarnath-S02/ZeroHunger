@@ -57,8 +57,10 @@ const OrphanageDetails = () => {
         const decoded = jwtDecode(token);
         console.log("Decoded JWT:", decoded); // Log the entire decoded JWT
 
-        const { id: userId } = decoded;
-        console.log("Extracted User ID:", userId); // Check extracted userId
+        const { id: userId, email: userEmail } = decoded; // Extract User ID and Email
+        console.log("Extracted User ID:", userId);
+        console.log("Extracted User Email:", userEmail); // Log the extracted User Email
+        // Check extracted userId
 
         console.log("Submitting Donation with Data:", {
           userId,
@@ -141,13 +143,13 @@ const OrphanageDetails = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
           {/* Orphanage Details */}
           <motion.div
-            className="bg-white shadow-xl p-6 rounded-lg flex flex-col"
+            className="bg-white shadow-xl p-10 rounded-lg flex flex-col"
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
           >
             <h3 className="text-3xl font-semibold mb-6 text-custom-orange">Orphanage Information</h3>
-            <p className="text-gray-700 mb-4">{orphanage.description || "No description available."}</p>
+            <p className="text-gray-700 mb-4 text-justify">{orphanage.description || "No description available."}</p>
             <div className="flex items-center mb-4">
               <FaPhoneAlt className="text-custom-orange mr-3" />
               <span className="text-lg text-gray-800">{orphanage.phone}</span>

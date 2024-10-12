@@ -1,51 +1,51 @@
-import React from 'react';
+import React, { useState } from 'react';
+import DonationRequest from '../components/DonationRequestDashboard';
+import Donations from '../components/DonationsDashboard';
+import ReceivedFoods from '../components/ReceivedFoodsDashboard';
+import 'tailwindcss/tailwind.css';
 
 const Dashboard = () => {
+  const [activeTab, setActiveTab] = useState('donationRequest');
+
   return (
     <div className="flex h-screen">
       {/* Sidebar */}
-      <aside className="w-64 bg-custom-orange text-white flex flex-col">
-        <div className="p-6">
-          <h1 className="text-2xl font-bold">Dashboard</h1>
-        </div>
-        <nav className="flex-1">
-          <ul>
-            <li className="px-6 py-2 hover:bg-gray-700">
-              <a href="#donations" className='text-white'>Donations</a>
-            </li>
-            <li className="px-6 py-2 hover:bg-gray-700">
-              <a href="#received" className='text-white'>Received Food</a>
-            </li>
-            <li className="px-6 py-2 hover:bg-gray-700">
-              <a href="#settings" className='text-white'>Settings</a>
-            </li>
-          </ul>
-        </nav>
-        <div className="p-6">
-          <button className="w-full bg-red-500 py-2 px-4 rounded hover:bg-red-700">Logout</button>
-        </div>
-      </aside>
+      <div className="w-1/5 bg-orange-600 p-6">
+        <h2 className="text-white text-2xl font-bold mb-6">User Dashboard</h2>
+        <ul className="space-y-4">
+          <li>
+            <button
+              className={`text-white font-semibold p-4 w-full text-left ${activeTab === 'donationRequest' ? 'bg-orange-700 rounded-lg' : ''}`}
+              onClick={() => setActiveTab('donationRequest')}
+            >
+              Donation Requests
+            </button>
+          </li>
+          <li>
+            <button
+              className={`text-white font-semibold p-4 w-full text-left ${activeTab === 'donations' ? 'bg-orange-700 rounded-lg' : ''}`}
+              onClick={() => setActiveTab('donations')}
+            >
+              Donations
+            </button>
+          </li>
+          <li>
+            <button
+              className={`text-white font-semibold p-4 w-full text-left ${activeTab === 'receivedFoods' ? 'bg-orange-700 rounded-lg' : ''}`}
+              onClick={() => setActiveTab('receivedFoods')}
+            >
+              Received Foods
+            </button>
+          </li>
+        </ul>
+      </div>
 
-      {/* Main Content */}
-      <main className="flex-1 p-8 bg-gray-100 overflow-y-auto">
-        {/* Donations Section */}
-        <section id="donations" className="mb-8">
-          <h2 className="text-2xl font-bold mb-4">Donations</h2>
-          <div className="bg-white shadow rounded-lg p-6">
-            {/* Replace with dynamic content */}
-            <p>No donations found.</p>
-          </div>
-        </section>
-
-        {/* Received Food Section */}
-        <section id="received" className="mb-8">
-          <h2 className="text-2xl font-bold mb-4">Received Food</h2>
-          <div className="bg-white shadow rounded-lg p-6">
-            {/* Replace with dynamic content */}
-            <p>No received food details found.</p>
-          </div>
-        </section>
-      </main>
+      {/* Main content */}
+      <div className="flex-1 bg-gray-100 p-6 overflow-y-auto"> {/* Add overflow-y-auto here */}
+        {activeTab === 'donationRequest' && <DonationRequest />}
+        {activeTab === 'donations' && <Donations />}
+        {activeTab === 'receivedFoods' && <ReceivedFoods />}
+      </div>
     </div>
   );
 };

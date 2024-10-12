@@ -50,8 +50,8 @@ const donationSchema = new mongoose.Schema({
   },
   status: {
     type: String,
-    enum: ['initiated', 'progress', 'completed'],
-    default: 'initiated', // Default value set to 'initiated'
+    enum: ['waiting for approval','initiated', 'progress', 'completed'],
+    default: 'waiting for approval', // Default value set to 'initiated'
   },
   createdAt: {
     type: Date,
