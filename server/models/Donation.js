@@ -40,7 +40,7 @@ const donationSchema = new mongoose.Schema({
     required: true,
   },
   donationDate: {
-    type: Date,
+    type: String,
     required: true,
   },
   donationTime: {

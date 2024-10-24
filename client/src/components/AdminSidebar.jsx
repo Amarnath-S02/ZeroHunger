@@ -36,11 +36,11 @@ const Sidebar = () => {
             View Orphanages
           </Link>
         </li>
-        <li className="mb-4">
+        {/* <li className="mb-4">
           <Link to="/admin/reports" className="block py-2 px-4 rounded-lg hover:bg-white hover:text-gray-700 text-lg text-white">
             View Reports
           </Link>
-        </li>
+        </li> */}
       </ul>
     </div>
   );

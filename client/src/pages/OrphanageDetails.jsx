@@ -5,6 +5,7 @@ import { jwtDecode } from 'jwt-decode'; // Import jwt-decode to decode the JWT
 import { FaPhoneAlt, FaEnvelope, FaUtensils, FaCheckCircle, FaExclamationCircle } from 'react-icons/fa';
 import { toast } from 'react-toastify';
 import { motion } from 'framer-motion';
+import 'react-toastify/dist/ReactToastify.css';
 import '../services/BackgroundAnimation.scss';
 
 const OrphanageDetails = () => {
@@ -39,6 +40,14 @@ const OrphanageDetails = () => {
     setDonationData({ ...donationData, [name]: value });
   };
 
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-based
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`; // Return in YYYY-MM-DD format
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const { foodName, quantity, donationDate, donationTime } = donationData;
@@ -62,6 +71,9 @@ const OrphanageDetails = () => {
         console.log("Extracted User Email:", userEmail); // Log the extracted User Email
         // Check extracted userId
 
+        // Convert donationDate to an ISO string
+        const formattedDonationDate = formatDate(donationDate); // Formatting the date to ISO
+
         console.log("Submitting Donation with Data:", {
           userId,
           orphanageName: orphanage.name,
@@ -69,7 +81,7 @@ const OrphanageDetails = () => {
           orphanageEmail: orphanage.email,
           foodItem: foodName,
           quantity,
-          donationDate,
+          donationDate: formattedDonationDate, // Send formatted date,
           donationTime,
       });
 
@@ -83,7 +95,7 @@ const OrphanageDetails = () => {
                 orphanageEmail: orphanage.email,
                 foodItem: foodName,
                 quantity,
-                donationDate,
+                donationDate: formattedDonationDate,
                 donationTime,
             },
             {
@@ -92,7 +104,7 @@ const OrphanageDetails = () => {
         );
 
         console.log("Response from Donation Submission:", response.data);
-        toast.success(<div><FaCheckCircle className="inline mr-2" /> Donation submitted successfully!</div>);
+        toast.success('Donation submitted successfully!');
         setDonationData({ foodName: '', quantity: '', donationDate: '', donationTime: '' },100);
     } catch (error) {
         console.error('Error submitting donation:', error);

@@ -1,5 +1,12 @@
 const express = require('express');
-const { createRequest, getTodayRequests, getAllRequests, updateRequest } = require('../controllers/requestController');
+const { 
+    createRequest, 
+    getTodayRequests, 
+    getAllRequests, 
+    updateRequest,
+    initiateDonation,
+    completeRequest,
+} = require('../controllers/requestController');
 
 const router = express.Router();
 
@@ -13,5 +20,11 @@ router.get('/', getAllRequests);
 
 // Route to update a request by ID
 router.put('/:id', updateRequest);
+
+// Route to initiate a donation
+router.post('/initiate', initiateDonation);
+
+// Route to complete a donation request
+router.put('/:id/complete', completeRequest);
 
 module.exports = router;

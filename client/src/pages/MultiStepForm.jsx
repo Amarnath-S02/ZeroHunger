@@ -299,37 +299,42 @@ const MultiStepForm = () => {
 
                     {currentStep === 3 && (
                         <div className="form-container animated active">
-                            <h2 className="text-center form-title">Profile Image</h2>
-                            <form>
-                                <div className="form-group">
-                                    <input
-                                        type="file"
-                                        name="profileImage"
-                                        onChange={handleChange}
-                                        className='my-2'
-                                    />
-                                    {imagePreview && (
-                                        <div className="image-preview my-4">
-                                            <img src={imagePreview} alt="Profile Preview" />
-                                        </div>
-                                    )}
-                                </div>
-                                <div className="form-group text-center mar-b-0 flex justify-between items-center">
-                                    <input
-                                        type="button"
-                                        value="BACK"
-                                        className="btn btn-secondary back"
-                                        onClick={handleBack}
-                                    />
-                                    <input
-                                        type="button"
-                                        value="NEXT"
-                                        className="btn btn-primary next"
-                                        onClick={handleNext}
-                                    />
-                                </div>
-                            </form>
-                        </div>
+                        <h2 className="text-center form-title">Profile Image</h2>
+                        <form>
+                          <div className="form-group">
+                            <input
+                              type="file"
+                              name="profileImage"
+                              onChange={handleChange}
+                              className="my-2"
+                            />
+                            {imagePreview && (
+                              <div className="image-preview my-4 flex justify-center">
+                                <img
+                                  src={imagePreview}
+                                  alt="Profile Preview"
+                                  className="rounded-full w-32 h-32 object-cover"
+                                />
+                              </div>
+                            )}
+                          </div>
+                          <div className="form-group text-center mar-b-0 flex justify-between items-center">
+                            <input
+                              type="button"
+                              value="BACK"
+                              className="btn btn-secondary back"
+                              onClick={handleBack}
+                            />
+                            <input
+                              type="button"
+                              value="NEXT"
+                              className="btn btn-primary next"
+                              onClick={handleNext}
+                            />
+                          </div>
+                        </form>
+                      </div>
+                      
                     )}
 
                     {currentStep === 4 && (

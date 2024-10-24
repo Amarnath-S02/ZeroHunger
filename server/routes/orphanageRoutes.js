@@ -1,7 +1,16 @@
 // routes/orphanageRoutes.js
 const express = require('express');
 const router = express.Router();
-const { addOrphanage, getAllOrphanages, updateOrphanage, getOrphanageById, deleteOrphanage, submitDonation } = require('../controllers/orphanageController');
+const { 
+    addOrphanage, 
+    getAllOrphanages, 
+    updateOrphanage, 
+    getOrphanageById, 
+    deleteOrphanage, 
+    submitDonation,
+    getOrphanageDonations,
+    getOrphanageDonationsByEmail,
+} = require('../controllers/orphanageController');
 
 // Route to add a new orphanage
 router.post('/', addOrphanage);
@@ -19,5 +28,12 @@ router.get('/:id', getOrphanageById);
 router.delete('/:id', deleteOrphanage); // Delete orphanage by ID
 
 router.post('/submit', submitDonation);
+
+// Route to get orphanage donations by orphanage name
+router.get('/orphanage', getOrphanageDonations);
+
+// Route to fetch orphanage donations by donorEmail
+router.get('/completed', getOrphanageDonationsByEmail);
+
 
 module.exports = router;

@@ -1,4 +1,5 @@
 import React from 'react';
+import { ToastContainer } from 'react-toastify';
 import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import HomePage from './pages/HomePage';
@@ -49,6 +50,7 @@ const App = () => {
   return (
     <Router>
       <Layout>
+      <ToastContainer />
         <Routes>
           {/* Public Routes */}
           <Route path="/" element={<HomePage />} />

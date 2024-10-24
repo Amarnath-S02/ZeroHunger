@@ -6,11 +6,13 @@ const {
     updateDonation, 
     handleDonationRequest, 
     completeDonation, 
-    getDonationRequests, 
+    getDonationRequests,
+    getInitiatedDonationRequests,
     approveDonation, 
     getReceivedFoods,
     markAsReceived,
     getCompletedDonations,
+    getOrphanageDonationsByEmail
 } = require('../controllers/donationsController');
 
 // Route to get donations for the current date
@@ -26,7 +28,7 @@ router.post('/request', handleDonationRequest);
 router.put('/:id/complete', completeDonation);
 
 // Route to get donation requests filtered by status and email
-router.get('/', getDonationRequests);
+router.get('/', getDonationRequests,getInitiatedDonationRequests);
 
 // Route to approve a donation by its ID
 router.patch('/:id/approve', approveDonation);
@@ -39,5 +41,8 @@ router.patch('/:id/complete', markAsReceived);
 
 // Define the route to fetch completed donations by donorEmail
 router.get('/completed', getCompletedDonations);
+
+// Route to fetch completed orphanage donations
+router.get('/completed/orphanage', getOrphanageDonationsByEmail);
 
 module.exports = router;
