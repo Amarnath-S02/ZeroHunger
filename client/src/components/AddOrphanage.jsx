@@ -39,7 +39,7 @@ const AddOrphanage = () => {
     formData.append('image', orphanage.image);
 
     try {
-      await axios.post('http://localhost:5000/api/orphanages', formData, {
+      await axios.post('https://zerohunger-wzdk.onrender.com/api/orphanages', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },

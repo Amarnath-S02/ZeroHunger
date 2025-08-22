@@ -69,12 +69,12 @@ const ReceivedFoodsDashboard = () => {
         const userEmail = decodedToken.email;
 
         // Fetch initiated foods
-        const responseInitiated = await fetch(`http://localhost:5000/api/donations/received?status=initiated&email=${userEmail}`);
+        const responseInitiated = await fetch(`https://zerohunger-wzdk.onrender.com/api/donations/received?status=initiated&email=${userEmail}`);
         const dataInitiated = await responseInitiated.json();
         setReceivedFoods(dataInitiated);
 
         // Fetch completed foods
-        const responseCompleted = await fetch(`http://localhost:5000/api/donations/received?status=completed&email=${userEmail}`);
+        const responseCompleted = await fetch(`https://zerohunger-wzdk.onrender.com/api/donations/received?status=completed&email=${userEmail}`);
         const dataCompleted = await responseCompleted.json();
         setCompletedFoods(dataCompleted);
       } catch (error) {
@@ -94,7 +94,7 @@ const ReceivedFoodsDashboard = () => {
 
   const handleMarkAsReceived = async (foodId) => {
     try {
-      const response = await fetch(`http://localhost:5000/api/donations/${foodId}/complete`, {
+      const response = await fetch(`https://zerohunger-wzdk.onrender.com/api/donations/${foodId}/complete`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',

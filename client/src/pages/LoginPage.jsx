@@ -20,7 +20,7 @@ const LoginPage = () => {
 
         try {
             // Send login request to the backend
-            const response = await axios.post('http://localhost:5000/api/users/login', { email, password });
+            const response = await axios.post('https://zerohunger-wzdk.onrender.com/api/users/login', { email, password });
 
             // Handle successful login
             localStorage.setItem('token', response.data.token); // Store JWT token in localStorage

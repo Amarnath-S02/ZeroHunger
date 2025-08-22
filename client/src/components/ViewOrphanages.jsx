@@ -18,7 +18,7 @@ const ViewOrphanages = () => {
   useEffect(() => {
     const fetchOrphanages = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/orphanages/view');
+        const response = await axios.get('https://zerohunger-wzdk.onrender.com/api/orphanages/view');
         setOrphanages(response.data);
       } catch (error) {
         console.error('Error fetching orphanages:', error);
@@ -37,7 +37,7 @@ const ViewOrphanages = () => {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`http://localhost:5000/api/orphanages/${id}`);
+      await axios.delete(`https://zerohunger-wzdk.onrender.com/api/orphanages/${id}`);
       setOrphanages(orphanages.filter((orphanage) => orphanage._id !== id));
     } catch (error) {
       console.error('Error deleting orphanage:', error);
@@ -46,7 +46,7 @@ const ViewOrphanages = () => {
 
   const handleSave = async (id) => {
     try {
-      await axios.put(`http://localhost:5000/api/orphanages/${id}`, editedOrphanage);
+      await axios.put(`https://zerohunger-wzdk.onrender.com/api/orphanages/${id}`, editedOrphanage);
       setOrphanages((prevOrphanages) =>
         prevOrphanages.map((orphanage) =>
           orphanage._id === id ? { ...orphanage, ...editedOrphanage } : orphanage

@@ -19,7 +19,7 @@ const ManageUsers = () => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/admin/users');
+        const response = await axios.get('https://zerohunger-wzdk.onrender.com/admin/users');
         console.log('Fetched Users:', response.data);
         setUsers(response.data);
       } catch (error) {
@@ -60,10 +60,10 @@ const ManageUsers = () => {
   // Submit updated user details
   const handleSubmitEdit = async (userId) => {
     try {
-      await axios.put(`http://localhost:5000/admin/users/${userId}`, editFormData);
+      await axios.put(`https://zerohunger-wzdk.onrender.com/admin/users/${userId}`, editFormData);
       setEditingUser(null);
       // Refresh users list after successful update
-      const response = await axios.get('http://localhost:5000/admin/users');
+      const response = await axios.get('https://zerohunger-wzdk.onrender.com/admin/users');
       setUsers(response.data);
     } catch (error) {
       console.error('Error updating user:', error);

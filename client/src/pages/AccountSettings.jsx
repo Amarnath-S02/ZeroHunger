@@ -19,7 +19,7 @@ const AccountSettings = () => {
         const decoded = jwtDecode(token);
         const { id } = decoded; // Assuming _id is the user ID in the token
 
-        const response = await fetch(`http://localhost:5000/api/users/account/${id}`, {
+        const response = await fetch(`https://zerohunger-wzdk.onrender.com/api/users/account/${id}`, {
           headers: {
             'Authorization': token,  // Pass token in the header
           },

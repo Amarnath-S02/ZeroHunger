@@ -25,7 +25,7 @@ const Navbar = () => {
       
       // Fetch user details from the backend using the id
       axios
-        .get(`http://localhost:5000/api/users/nav/${id}`) // Replace this URL with your API endpoint
+        .get(`https://zerohunger-wzdk.onrender.com/api/users/nav/${id}`) // Replace this URL with your API endpoint
         .then((response) => {
           setUserData(response.data); // Store the user data
         })
@@ -81,7 +81,7 @@ const Navbar = () => {
               >
                 <span className="sr-only">Open user menu</span>
                 {/* <img className="w-8 h-8 rounded-full" src={Profile} alt="User profile" /> */}
-                <img src={`http://localhost:5000/uploads/${userData.profileImage}`} alt="Profile" className="w-12 h-12 rounded-full" />
+                <img src={`https://zerohunger-wzdk.onrender.com/uploads/${userData.profileImage}`} alt="Profile" className="w-12 h-12 rounded-full" />
               </button>
 
               {/* Dropdown menu */}

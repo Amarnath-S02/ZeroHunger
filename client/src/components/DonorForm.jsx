@@ -105,7 +105,7 @@ const DonorForm = () => {
       const decoded = jwtDecode(token);
       const { id } = decoded; // Assuming _id is the user ID in the token
 
-      const response = await fetch(`http://localhost:5000/api/users/account/${id}`, {
+      const response = await fetch(`https://zerohunger-wzdk.onrender.com/api/users/account/${id}`, {
         headers: {
           'Authorization': token,  // Pass token in the header
         },
@@ -158,7 +158,7 @@ const DonorForm = () => {
       }
 
       try {
-        const response = await axios.post('http://localhost:5000/api/donors', formDataToSend, {
+        const response = await axios.post('https://zerohunger-wzdk.onrender.com/api/donors', formDataToSend, {
           headers: {
             'Content-Type': 'multipart/form-data',
           },

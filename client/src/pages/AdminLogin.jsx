@@ -12,7 +12,7 @@ const AdminLogin = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:5000/admin/login', { username, password });
+      const response = await axios.post('https://zerohunger-wzdk.onrender.com/admin/login', { username, password });
       if (response.status === 200) {
         // Store token in local storage
         localStorage.setItem('token', response.data.token);

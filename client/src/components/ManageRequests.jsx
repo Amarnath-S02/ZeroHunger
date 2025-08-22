@@ -24,7 +24,7 @@ const ManageRequests = () => {
   useEffect(() => {
     const fetchRequests = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/requests');
+        const response = await axios.get('https://zerohunger-wzdk.onrender.com/api/requests');
         setRequests(response.data);
       } catch (error) {
         console.error('Error fetching requests:', error);
@@ -66,7 +66,7 @@ const ManageRequests = () => {
   // Save changes to request
   const handleSave = async (id) => {
     try {
-      await axios.put(`http://localhost:5000/api/requests/${id}`, editedRequest);
+      await axios.put(`https://zerohunger-wzdk.onrender.com/api/requests/${id}`, editedRequest);
       setRequests((prevRequests) =>
         prevRequests.map((request) =>
           request._id === id ? { ...request, ...editedRequest } : request

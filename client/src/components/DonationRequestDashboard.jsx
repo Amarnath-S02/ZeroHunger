@@ -17,7 +17,7 @@ const DonationRequestDashboard = () => {
 
       try {
         // Fetch donation requests with 'waiting for approval' status
-        const response = await fetch(`http://localhost:5000/api/donations?status=waiting for approval&email=${userEmail}`);
+        const response = await fetch(`https://zerohunger-wzdk.onrender.com/api/donations?status=waiting for approval&email=${userEmail}`);
         if (!response.ok) {
           throw new Error('Failed to fetch donation requests');
         }
@@ -31,7 +31,7 @@ const DonationRequestDashboard = () => {
 
       try {
         // Fetch donations with 'initiated' status
-        const initiatedResponse = await fetch(`http://localhost:5000/api/donations?status=initiated&email=${userEmail}`);
+        const initiatedResponse = await fetch(`https://zerohunger-wzdk.onrender.com/api/donations?status=initiated&email=${userEmail}`);
         if (!initiatedResponse.ok) {
           throw new Error('Failed to fetch initiated donations');
         }
@@ -47,7 +47,7 @@ const DonationRequestDashboard = () => {
 
   const handleApprove = async (requestId) => {
     try {
-      const response = await fetch(`http://localhost:5000/api/donations/${requestId}/approve`, {
+      const response = await fetch(`https://zerohunger-wzdk.onrender.com/api/donations/${requestId}/approve`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',

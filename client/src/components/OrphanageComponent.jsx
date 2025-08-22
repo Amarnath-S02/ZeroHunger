@@ -11,7 +11,7 @@ const OrphanageComponent = () => {
   useEffect(() => {
     const fetchOrphanages = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/orphanages/view'); // Make sure your backend route is correct
+        const response = await axios.get('https://zerohunger-wzdk.onrender.com/api/orphanages/view'); // Make sure your backend route is correct
         setOrphanages(response.data); // Set orphanages data
         setLoading(false); // Loading done
       } catch (err) {
@@ -40,7 +40,7 @@ const OrphanageComponent = () => {
             key={orphanage._id}
             id={orphanage._id} // Pass the orphanage ID to PostOrph
             name={orphanage.name}
-            imgSrc={`http://localhost:5000/${orphanage.image.replace(/\\/g, '/')}`}
+            imgSrc={`https://zerohunger-wzdk.onrender.com/${orphanage.image.replace(/\\/g, '/')}`}
           />
         ))}
       </div>

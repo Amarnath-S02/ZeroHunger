@@ -24,7 +24,7 @@ const ManageDonations = () => {
   useEffect(() => {
     const fetchDonations = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/admin/donations');
+        const response = await axios.get('https://zerohunger-wzdk.onrender.com/admin/donations');
         setDonations(response.data);
       } catch (error) {
         console.error('Error fetching donations:', error);
@@ -66,7 +66,7 @@ const ManageDonations = () => {
   // Handle saving the edited donation
   const handleSave = async (id) => {
     try {
-      await axios.put(`http://localhost:5000/admin/donations/${id}`, editedDonation);
+      await axios.put(`https://zerohunger-wzdk.onrender.com/admin/donations/${id}`, editedDonation);
       setDonations((prevDonations) =>
         prevDonations.map((donation) =>
           donation._id === id ? { ...donation, ...editedDonation } : donation

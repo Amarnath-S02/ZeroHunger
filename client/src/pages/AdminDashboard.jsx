@@ -8,7 +8,7 @@ const AdminDashboard = () => {
   const navigate = useNavigate()
   const handleLogout = async () => {
     try {
-      await axios.post('http://localhost:5000/admin/logout', {}, {
+      await axios.post('https://zerohunger-wzdk.onrender.com/admin/logout', {}, {
         headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
       });
 

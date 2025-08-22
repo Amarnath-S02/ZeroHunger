@@ -162,11 +162,11 @@ const DonationsDashboard = () => {
           const donorEmail = decodedToken.email;
 
           // Fetch normal donations
-          const response = await fetch(`http://localhost:5000/api/donations/completed?donorEmail=${donorEmail}`);
+          const response = await fetch(`https://zerohunger-wzdk.onrender.com/api/donations/completed?donorEmail=${donorEmail}`);
           const data = await response.json();
 
           // Fetch orphanage donations
-          const orphanageResponse = await fetch(`http://localhost:5000/api/donations/completed/orphanage?donorEmail=${donorEmail}`);
+          const orphanageResponse = await fetch(`https://zerohunger-wzdk.onrender.com/api/donations/completed/orphanage?donorEmail=${donorEmail}`);
           const orphanageData = await orphanageResponse.json();
 
           // Sort by date

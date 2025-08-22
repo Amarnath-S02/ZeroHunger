@@ -23,7 +23,7 @@ const RequestComponent = () => {
     // Fetch the requests for today's date
     const fetchRequests = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/requests/today'); // Adjust the URL as per your backend
+        const response = await axios.get('https://zerohunger-wzdk.onrender.com/api/requests/today'); // Adjust the URL as per your backend
         setRequests(response.data);
       } catch (err) {
         setError('Error fetching data');
@@ -58,11 +58,11 @@ const RequestComponent = () => {
 
       try {
         // Send the donation request
-        const response = await axios.post('http://localhost:5000/api/requests/initiate', donationData);
+        const response = await axios.post('https://zerohunger-wzdk.onrender.com/api/requests/initiate', donationData);
 
         if (response.status === 201) {
           // Update the status of the donation to "Completed"
-          await axios.put(`http://localhost:5000/api/requests/${request._id}/complete`);
+          await axios.put(`https://zerohunger-wzdk.onrender.com/api/requests/${request._id}/complete`);
 
           toast.success("Thank you for donating!", {
             position: 'top-right',

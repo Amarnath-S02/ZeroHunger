@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'http://localhost:5000/api/users/register';
+const API_URL = 'https://zerohunger-wzdk.onrender.com/api/users/register';
 
 const registerUser = (formData) => {
     return axios.post(API_URL, formData, {

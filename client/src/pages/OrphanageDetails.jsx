@@ -23,7 +23,7 @@ const OrphanageDetails = () => {
   useEffect(() => {
     const fetchOrphanage = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/api/orphanages/${id}`);
+        const response = await axios.get(`https://zerohunger-wzdk.onrender.com/api/orphanages/${id}`);
         setOrphanage(response.data);
         setLoading(false);
       } catch (err) {
@@ -87,7 +87,7 @@ const OrphanageDetails = () => {
 
         // Send the donation data to the backend
         const response = await axios.post(
-            'http://localhost:5000/api/orphanages/submit',
+            'https://zerohunger-wzdk.onrender.com/api/orphanages/submit',
             {
                 userId,
                 orphanageName: orphanage.name,
@@ -141,7 +141,7 @@ const OrphanageDetails = () => {
       {/* Orphanage Image with Name and Address Overlay */}
       <div className="relative w-full h-96 bg-gradient-to-t from-orange-600 to-orange-400">
         <img
-          src={`http://localhost:5000/${orphanage.image.replace(/\\/g, '/')}`}
+          src={`https://zerohunger-wzdk.onrender.com/${orphanage.image.replace(/\\/g, '/')}`}
           alt={orphanage.name}
           className="w-full h-full object-cover object-center opacity-95"
         />
