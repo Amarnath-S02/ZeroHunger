@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Post from '../components/Post';
-import jwtDecode from 'jwt-decode'; // ✅ Correct import (without curly braces)
+import { jwtDecode } from "jwt-decode";
+// ✅ Correct import (without curly braces)
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
